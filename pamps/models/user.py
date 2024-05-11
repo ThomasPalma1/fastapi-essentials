@@ -1,5 +1,6 @@
 from typing import Optional
 from sqlmodel import Field, SQLModel
+from pamps.security import HashedPassword
 
 
 class User(SQLModel, table=True):
@@ -10,4 +11,4 @@ class User(SQLModel, table=True):
     username: str = Field(unique=True, nullable=False)
     avatar: Optional[str] = None
     bio: Optional[str] = None
-    password: str = Field(nullable=False)
+    password: HashedPassword
