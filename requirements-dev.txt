@@ -1,0 +1,9 @@
+sdb             # remote debugger
+ipdb            # debugger
+httpx           # async requests for testing
+black           # auto formatting
+pytest          # test execution
+flake8          # linter
+ipython         # terminal
+pip-tools       # dependency lock
+pytest-order    # test ordering

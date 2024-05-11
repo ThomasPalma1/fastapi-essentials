@@ -1,0 +1,16 @@
+rich
+typer
+fastapi
+jinja2
+uvicorn
+alembic
+sqlmodel
+dynaconf
+psycopg2-binary
+passlib[bcrypt]
+python-multipart
+python-jose[cryptography]
+
+
+# This file contains a list of essential dependencies for your project, usually naming only the necessary libraries, without specifying the versions.
+# It's more useful to declare the required dependencies here, while the exact versions are resolved later.
