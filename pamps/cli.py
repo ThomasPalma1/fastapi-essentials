@@ -2,9 +2,9 @@ import typer
 from .db import engine
 from rich.table import Table
 from .config import settings
-from .models import User, Post
 from rich.console import Console
 from sqlmodel import Session, select
+from .models import Post, SQLModel, User
 
 main = typer.Typer(name="Pamps CLI")
 
@@ -23,9 +23,13 @@ def shell():
     typer.echo(f"Auto imports: {list(_vars.keys())}")
     try:
         from IPython import start_ipython
-        start_ipython(argv=["--ipython-dir=/tmp", "--no-banner"], user_ns=_vars)
+
+        start_ipython(
+            argv=["--ipython-dir=/tmp", "--no-banner"], user_ns=_vars
+        )
     except ImportError:
         import code
+
         code.InteractiveConsole(_vars).interact()
 
 
@@ -36,10 +40,12 @@ def user_list():
     fields = ["username", "email"]
     for header in fields:
         table.add_column(header, style="magenta")
+
     with Session(engine) as session:
         users = session.exec(select(User))
         for user in users:
             table.add_row(user.username, user.email)
+
     Console().print(table)
 
 
@@ -53,3 +59,15 @@ def create_user(email: str, username: str, password: str):
         session.refresh(user)
         typer.echo(f"created {username} user")
         return user
+
+
+@main.command()
+def reset_db(
+        force: bool = typer.Option(
+            False, "--force", "-f", help="Run with no confirmation"
+        )
+):
+    """Resets the database tables"""
+    force = force or typer.confirm("Are you sure?")
+    if force:
+        SQLModel.metadata.drop_all(engine)
