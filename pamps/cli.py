@@ -1,8 +1,8 @@
 import typer
 from .db import engine
-from .models import User
 from rich.table import Table
 from .config import settings
+from .models import User, Post
 from rich.console import Console
 from sqlmodel import Session, select
 
@@ -18,6 +18,7 @@ def shell():
         "select": select,
         "session": Session(engine),
         "User": User,
+        "Post": Post,
     }
     typer.echo(f"Auto imports: {list(_vars.keys())}")
     try:

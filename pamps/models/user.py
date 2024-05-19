@@ -1,7 +1,11 @@
-from typing import Optional
 from pydantic import BaseModel
-from sqlmodel import Field, SQLModel
+
 from pamps.security import HashedPassword
+from typing import TYPE_CHECKING, List, Optional
+from sqlmodel import Field, Relationship, SQLModel
+
+if TYPE_CHECKING:
+    from pamps.models.post import Post
 
 
 class User(SQLModel, table=True):
@@ -13,6 +17,8 @@ class User(SQLModel, table=True):
     avatar: Optional[str] = None
     bio: Optional[str] = None
     password: HashedPassword
+
+    posts: List["Post"] = Relationship(back_populates="user")
 
 
 class UserResponse(BaseModel):
